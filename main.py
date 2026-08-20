@@ -3,34 +3,26 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-users = []
+# {
+#     "name": "Mohit",
+#     "age": 25,
+#   "  password ":12345
+# }
+# for this we have to learn branch model 
 
+class User (BaseModel):
+    name : str
+    age : int
+    password : str
 
-class User(BaseModel):
-    name: str
-    age: int
+class UserResponse(BaseModel):
+    name : str
+    age : int
 
-
-@app.post("/users")
-def create_user(user: User):
-    users.append(user)
-    return {
-        "message": "User Created",
-        "data": user
-    }
-
-
-@app.put("/users/{user_id}")
-def update_user(user_id: int, user: User, notify: bool = False):
-    if user_id < len(users):
-        users[user_id] = user
-
-        return {
-            "message": "User Updated",
-            "notify": notify,
-            "data": user
-        }
-
-    return {
-        "error": "User not Found"
+@app.get("/user",response_model=UserResponse)
+def get_use():
+    return{
+        "name":"Sourav",
+        "age": 23,
+        "password":"12345"
     }
